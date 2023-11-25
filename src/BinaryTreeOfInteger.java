@@ -39,14 +39,27 @@ public class BinaryTreeOfInteger {
 
   //Adicionar elementos na árvore: void add(obj);
   public Node addRecursive(Node node, Integer element){
-    if(root == null){
+    if(node == null){
       count++;
-      return root = new Node(element);
+      return new Node(element);
     }
     if(node.element < element){
       Node newNode = new Node(element);
       node.right = addRecursive(newNode, element);
       node.right.father = node;
+    }else if(node.element > element){
+      Node newNode = new Node(element);
+      node.left = addRecursive(newNode, element);
+      node.left.father = node;
     }
+    return node;
+  }
+
+  //Retornar o pai de um elemento: obj getParent(obj);
+  public Node getParent(Integer element){
+    if(root.element == element){
+      return root;
+    }
+    if()
   }
 }
