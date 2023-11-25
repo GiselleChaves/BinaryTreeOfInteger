@@ -96,9 +96,30 @@ public class BinaryTreeOfInteger {
   }
 
   // Verificar qual é a altura da árvore: int height();
+  public int height(){
+    return getHeightRecursive(root);
+  }
+
+  private int getHeightRecursive(Node node){
+    if(node == null){
+      return 0;
+    }
+    int leftHeight = getHeightRecursive(node.left);
+    int rightHeight = getHeightRecursive(node.right);
+
+    return Math.max(leftHeight, rightHeight);
+  }
+
+  // Verificar quantos elementos tem na árvore: int size()
   public int size(){
     return count;
   }
+
+  //Verificar se a árvore está vazia ou não: boolean isEmpty();
+  public boolean isEmpty(){
+    return root == null;
+  }
+
 
   //Printar Árvore
   public void printInOrder() {
@@ -114,4 +135,5 @@ public class BinaryTreeOfInteger {
       printInOrderRecursive(node.right);
     }
   }
+
 }

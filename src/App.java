@@ -4,7 +4,7 @@ public class App {
 
         bt.add(1);
         int size = bt.size();
-        System.out.println("Tamanho: " + size);
+        System.out.println("Quantidade de elementos: " + size);
         System.out.print("Valores no Array: ");
         bt.add(2);
         bt.add(3);
@@ -17,6 +17,6 @@ public class App {
         bt.printInOrder();
         System.out.println("");
         int newSize = bt.size();
-        System.out.println("Tamanho: " + newSize);
+        System.out.println("Nova quantidade de elementos: " + newSize);
     }
 }
