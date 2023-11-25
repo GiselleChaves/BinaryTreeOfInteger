@@ -24,23 +24,23 @@ public class BinaryTreeOfInteger {
     root = null;
   }
 
-  public boolean addRoot(Integer element) {
+  /*public boolean addRoot(Integer element) {
     if (root != null) // se a arvore nao estiver vazia
       return false;
     root = new Node(element);
     count++;
     return true;
-  }
+  }*/
 
   //add
   public void add(Integer element){
     root = addRecursive(root, element);
+    count++;
   }
 
   //Adicionar elementos na árvore: void add(obj);
   public Node addRecursive(Node node, Integer element){
     if(node == null){
-      count++;
       return new Node(element);
     }
     if(node.element < element){
@@ -98,5 +98,20 @@ public class BinaryTreeOfInteger {
   // Verificar qual é a altura da árvore: int height();
   public int size(){
     return count;
+  }
+
+  //Printar Árvore
+  public void printInOrder() {
+    printInOrderRecursive(root);
+  }
+
+  //VERIFICAR, NÃO ESTÁ PRINTANDO O ELEMENTO DO NODO DA ESQUERDA DEPOIS DE INSERIDO O 3° ELEMENTO!!!
+  private void printInOrderRecursive(Node node) {
+    if (node != null){
+      printInOrderRecursive(node.left);
+      System.out.print((node.element != null) ? node.element : "null");
+      System.out.print(" ");
+      printInOrderRecursive(node.right);
+    }
   }
 }
