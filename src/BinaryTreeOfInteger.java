@@ -94,4 +94,9 @@ public class BinaryTreeOfInteger {
       return getParentRecursive(node.right, element);
     }
   }
+
+  // Verificar qual é a altura da árvore: int height();
+  public int size(){
+    return count;
+  }
 }
