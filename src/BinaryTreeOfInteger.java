@@ -55,11 +55,43 @@ public class BinaryTreeOfInteger {
     return node;
   }
 
-  //Retornar o pai de um elemento: obj getParent(obj);
+  /*private Node searchNodeRef(Integer element, Node target) {
+    if ( target == null)
+        return null;
+    // Visita a "raiz"
+    if (element.equals(target.element))
+        return target; // se achou element na "raiz"
+
+    // Visita subarvore da esquerda
+    Node aux = searchNodeRef(element, target.left);
+
+    // Se nao encontrou, visita a subarvore da direita
+    if (aux == null)
+        aux = searchNodeRef(element, target.right);
+
+    return aux;
+  }*/
+
   public Node getParent(Integer element){
-    if(root.element == element){
-      return root;
+    return getParentRecursive(root, element);
+  }
+
+  //Retornar o pai de um elemento: obj getParent(obj);
+  public Node getParentRecursive(Node node, Integer element){
+    if(node == null || node.element.equals(element)){
+      return null;
     }
-    if()
+    if(element < node.element && node.element != null && node.element.equals(element)){
+      return node;
+    }
+    if(element > node.element && node.element.equals(element)){
+      return node;
+    }
+    Node auxLeftNode = getParentRecursive(node.left, element);
+    if(auxLeftNode != null){
+      return auxLeftNode;
+    }else{
+      return getParentRecursive(node.right, element);
+    }
   }
 }
