@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.List;
+
+import org.w3c.dom.Node;
+
 public class BinaryTreeOfInteger {
   
   // Classe BinaryTreeOfInteger
@@ -134,4 +139,86 @@ public class BinaryTreeOfInteger {
     }
   }
 
+  // Constrói uma árvore balanceada a partir de uma lista de nodos
+  private Node buildBalancedTree(List<Node> nodes, int start, int end) {
+    if (start > end) {
+      return null;
+    }
+
+    int mid = (start + end) / 2;
+    Node midNode = nodes.get(mid);
+
+    midNode.left = buildBalancedTree(nodes, start, mid - 1);
+    midNode.right = buildBalancedTree(nodes, mid + 1, end);
+
+    return midNode;
+  }
+
+  // Realiza uma travessia em ordem e armazena os nodos em uma lista
+  private void inOrderTraversal(Node node, List<Node> nodes) {
+    if (node != null) {
+      inOrderTraversal(node.left, nodes);
+      nodes.add(node);
+      inOrderTraversal(node.right, nodes);
+    }
+  }
+
+  // Método para balancear a árvore
+  public void balanceTree() {
+    List<Node> nodes = new ArrayList<>();
+    inOrderTraversal(root, nodes); // Realiza uma travessia em ordem e armazena os nodos em uma lista
+
+    // Constrói uma nova árvore balanceada a partir da lista de nodos
+    root = buildBalancedTree(nodes, 0, nodes.size() - 1);
+  }
+
+  //Printar a árvore balanceada
+  // Método para imprimir a árvore balanceada usando pré-ordem
+  public void printTreePreOrder() {
+    printTreePreOrderRecursive(root, 0);
+  }
+
+// Método auxiliar para imprimir a árvore usando pré-ordem de forma recursiva
+  private void printTreePreOrderRecursive(Node node, int depth) {
+    if (node == null) {
+      return;
+    }
+
+  // Imprime o nó atual (com recuo proporcional à profundidade)
+  for (int i = 0; i < depth; i++) {
+    System.out.print("  ");
+  }
+  System.out.println(node.element);
+
+  // Imprime a subárvore esquerda
+  printTreePreOrderRecursive(node.left, depth + 1);
+
+  // Imprime a subárvore direita
+  printTreePreOrderRecursive(node.right, depth + 1);
+  }
+
+  //NÃO ESTÁ 100%
+  // Método para imprimir a árvore balanceada usando pós-ordem
+  public void printTreePostOrder() {
+    printTreePostOrderRecursive(root, 0);
+  }
+
+  // Método auxiliar para imprimir a árvore usando pós-ordem de forma recursiva
+  private void printTreePostOrderRecursive(Node node, int depth) {
+    if (node == null) {
+      return;
+  }
+
+    // Imprime a subárvore esquerda
+    printTreePostOrderRecursive(node.left, depth + 1);
+
+    // Imprime a subárvore direita
+    printTreePostOrderRecursive(node.right, depth + 1);
+
+    // Imprime o nó atual (com recuo proporcional à profundidade)
+    for (int i = 0; i < depth; i++) {
+        System.out.print("  ");
+    }
+    System.out.println(node.element);
+  }
 }

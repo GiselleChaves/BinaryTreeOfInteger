@@ -5,7 +5,7 @@ public class App {
         bt.add(1);
         int size = bt.size();
         System.out.println("Quantidade de elementos: " + size);
-        System.out.print("Valores no Array: ");
+        System.out.print("Valores da Árvora não Balanceada: ");
         bt.add(2);
         bt.add(3);
         bt.add(4);
@@ -20,5 +20,11 @@ public class App {
         System.out.println("Nova quantidade de elementos: " + newSize);
         int treeHeight = bt.height();
         System.out.println("Altura da Árvore: " + treeHeight);
+        System.out.println(bt.isEmpty());
+        bt.balanceTree();
+        System.out.println("Valores da Árvora Balanceada em PréOrdem: ");
+        bt.printTreePreOrder();
+        System.out.println("Valores da Árvora Balanceada em PósOrdem: ");
+        bt.printTreePostOrder();
     }
 }
