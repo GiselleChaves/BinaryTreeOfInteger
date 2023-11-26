@@ -18,5 +18,7 @@ public class App {
         System.out.println("");
         int newSize = bt.size();
         System.out.println("Nova quantidade de elementos: " + newSize);
+        int treeHeight = bt.height();
+        System.out.println("Altura da Árvore: " + treeHeight);
     }
 }

@@ -1,5 +1,15 @@
 public class BinaryTreeOfInteger {
+  
+  // Classe BinaryTreeOfInteger
+  private int count; //contagem do número de nodos
+  private Node root; //referência para o nodo raiz
 
+  public BinaryTreeOfInteger() {
+    count = 0;
+    root = null;
+  }
+
+  //Classe Node
   private static final class Node {
     public Node father;
     public Node left;
@@ -14,16 +24,7 @@ public class BinaryTreeOfInteger {
     }
 }
 
-  // Atributos
-  private int count; //contagem do número de nodos
-  private Node root; //referência para o nodo raiz
-
-  // Metodos
-  public BinaryTreeOfInteger() {
-    count = 0;
-    root = null;
-  }
-
+  
   /*public boolean addRoot(Integer element) {
     if (root != null) // se a arvore nao estiver vazia
       return false;
@@ -34,23 +35,21 @@ public class BinaryTreeOfInteger {
 
   //add
   public void add(Integer element){
-    root = addRecursive(root, element);
+    root = addRecursive(root, null, element);
     count++;
   }
 
   //Adicionar elementos na árvore: void add(obj);
-  public Node addRecursive(Node node, Integer element){
+  private Node addRecursive(Node node, Node father, Integer element){
     if(node == null){
-      return new Node(element);
+      Node newNode = new Node(element);
+      newNode.father = father;
+      return newNode;
     }
     if(node.element < element){
-      Node newNode = new Node(element);
-      node.right = addRecursive(newNode, element);
-      node.right.father = node;
+      node.right = addRecursive(node.right, node, element);
     }else if(node.element > element){
-      Node newNode = new Node(element);
-      node.left = addRecursive(newNode, element);
-      node.left.father = node;
+      node.left = addRecursive(node.left, node, element);
     }
     return node;
   }
@@ -107,7 +106,7 @@ public class BinaryTreeOfInteger {
     int leftHeight = getHeightRecursive(node.left);
     int rightHeight = getHeightRecursive(node.right);
 
-    return Math.max(leftHeight, rightHeight);
+    return Math.max(leftHeight, rightHeight) + 1;
   }
 
   // Verificar quantos elementos tem na árvore: int size()
@@ -126,7 +125,6 @@ public class BinaryTreeOfInteger {
     printInOrderRecursive(root);
   }
 
-  //VERIFICAR, NÃO ESTÁ PRINTANDO O ELEMENTO DO NODO DA ESQUERDA DEPOIS DE INSERIDO O 3° ELEMENTO!!!
   private void printInOrderRecursive(Node node) {
     if (node != null){
       printInOrderRecursive(node.left);
