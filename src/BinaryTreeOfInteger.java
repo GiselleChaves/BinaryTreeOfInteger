@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BinaryTreeOfInteger {
-  private int count; //contagem do número de nodos
-  private Node root; //referência para o nodo raiz
+  private int count; 
+  private Node root; 
 
   public BinaryTreeOfInteger() {
     count = 0;
@@ -75,9 +75,9 @@ public class BinaryTreeOfInteger {
    * getParentRecursive Method
    * @param node
    * @param element
-   * @return a node that will be used by getParent Method
+   * @return a Integer that will be used by getParent Method
    */
-  public Integer getParentRecursive(Node node, Integer element){
+  private Integer getParentRecursive(Node node, Integer element){
     if(node == null){
       return null;
     }
@@ -100,7 +100,6 @@ public class BinaryTreeOfInteger {
     return heightRecursive(root);
   }
 
-  //NÃO ESTÁ 100%
   /**
    * heightRecursive Method
    * @param node
@@ -112,7 +111,7 @@ public class BinaryTreeOfInteger {
     } else {
       int leftHeight = heightRecursive(node.left);
       int rightHeight = heightRecursive(node.right);
-      return 1 + Math.max(leftHeight, rightHeight);
+      return 1 - Math.max(leftHeight, rightHeight);
     }
   }
 
@@ -142,6 +141,7 @@ public class BinaryTreeOfInteger {
 
   /**
    * printInOrderRecursive Method
+   * is used by printInOrder Method
    * @param node
    */
   private void printInOrderRecursive(Node node) {
@@ -159,9 +159,9 @@ public class BinaryTreeOfInteger {
    * @param nodes
    */
   private void inOrder(Node node, List<Node> nodes) {
-    if (node != null) {
-      inOrder(node.left, nodes);
-      nodes.add(node);
+    if (node != null) {           //Se nodo diferente de null
+      inOrder(node.left, nodes);  
+      nodes.add(node);            //Adiciona na lista nodes os nodos left e right da árvore 
       inOrder(node.right, nodes);
     }
   }
@@ -171,30 +171,47 @@ public class BinaryTreeOfInteger {
    */
   public void balanceTree() {
     if (root != null) {
-      List<Node> nodes = new ArrayList<>();
-      inOrder(root, nodes);
+      List<Node> nodes = new ArrayList<>();     //Onde é iniciada a lista nodes usada em inOrder
+      inOrder(root, nodes);                     //Chama inOrder passando por parâmenteo a root e a lista nodes
 
-      List<Integer> elements = new ArrayList<>();
-      for (Node node : nodes) {
-          elements.add(node.element);
+      List<Integer> elements = new ArrayList<>();   //Inicializa lista elements
+      for (Node node : nodes) {                     //Para cada node da lista nodes
+        elements.add(node.element);                //Adiciona na lisra elements o elemento do node
       }
 
       // Constrói uma nova árvore balanceada com base na lista de elementos
-      root = buildBalancedTree(elements, 0, elements.size() - 1);
+      root = buildBalancedTreeRecursive(elements, 0, elements.size() - 1);   //root recebe o retorno do método buildBalancedTreeRecursive
     }
   }
 
 
-  private Node buildBalancedTree(List<Integer> elements, int start, int end) {
-    if (start > end) {
+  /**
+   * buildBalancedTreeRecursive Method
+   * Is used in the balanceTree method
+   * @param elements
+   * @param start
+   * @param end
+   * @return 
+   */
+  private Node buildBalancedTreeRecursive(List<Integer> elements, int start, int end) {
+    if (start > end) { //Se o índice de início da árvore for maior que do fim, a árvore está vazia e retorna null 
         return null;
     }
 
-    int mid = (start + end) / 2;
-    Node newNode = new Node(elements.get(mid));
+    int mid = (start + end) / 2; //Encontra o centro da árvore
+    Node newNode = new Node(elements.get(mid)); //Instancia um novo nodo com o elemento encontrado como meio da árvore
 
-    newNode.left = buildBalancedTree(elements, start, mid - 1);
-    newNode.right = buildBalancedTree(elements, mid + 1, end);
+    newNode.left = buildBalancedTreeRecursive(elements, start, mid - 1); //newNode.left recebe o retorno recursivo, mid-1 para descontar o nodo mid da montagem do ramo esquerdo
+    newNode.right = buildBalancedTreeRecursive(elements, mid + 1, end); //newNode.right recebe o retorno recursivo mid+1, para descontar o nodo mid da montagem do ramo direito 
+    if(newNode.left != null){
+     newNode.left.father = newNode;
+    }
+    if(newNode != null){
+      newNode.father = newNode;
+    }
+    if(newNode.right != null){
+      newNode.right.father = newNode;
+    }
 
     return newNode;
   }
@@ -207,6 +224,11 @@ public class BinaryTreeOfInteger {
     printTreePreOrderRecursive(root);
   }
 
+  /**
+   * printTreePreOrderRecursive Method
+   * is used by printInOrder Method
+   * @param node
+   */
   private void printTreePreOrderRecursive(Node node) {
     if (node != null) {
       System.out.print(node.element + " "); // Visita o nó
@@ -236,12 +258,21 @@ public class BinaryTreeOfInteger {
     }
   }
 
+  /**
+   * generateDOT Method
+   * Print the DOT Method
+   */
   public void generateDOT() {
-    System.out.println("digraph BinaryTree {");
+    System.out.println("DOT Method");
     generateDOTRecursive(root);
     System.out.println("}");
-}
+  }
 
+  /**
+   * generateDOTRecursive Method
+   * Used in the generateDOT method
+   * @param node
+   */
   private void generateDOTRecursive(Node node) {
     if (node != null) {
       if (node.left != null) {
