@@ -1,11 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.Node;
-
 public class BinaryTreeOfInteger {
-  
-  // Classe BinaryTreeOfInteger
   private int count; //contagem do número de nodos
   private Node root; //referência para o nodo raiz
 
@@ -14,7 +10,7 @@ public class BinaryTreeOfInteger {
     root = null;
   }
 
-  //Classe Node
+
   private static final class Node {
     public Node father;
     public Node left;
@@ -29,107 +25,125 @@ public class BinaryTreeOfInteger {
     }
 }
 
-  
-  /*public boolean addRoot(Integer element) {
-    if (root != null) // se a arvore nao estiver vazia
-      return false;
-    root = new Node(element);
-    count++;
-    return true;
-  }*/
-
-  //add
+  /**
+   * add Method, add an node in the tree
+   * Use the addRecursive Method
+   * @param element
+   */
   public void add(Integer element){
-    root = addRecursive(root, null, element);
+    addRecursive(root, element);
     count++;
   }
 
-  //Adicionar elementos na árvore: void add(obj);
-  private Node addRecursive(Node node, Node father, Integer element){
+  /**
+   * addRecursive Method
+   * @param node
+   * @param father
+   * @param element
+   * @return a node that will be used by add Method
+   */
+  private Node addRecursive(Node node, Integer element){
     if(node == null){
-      Node newNode = new Node(element);
-      newNode.father = father;
-      return newNode;
+      node = new Node(element);
+      if(root == null){
+        root = node;
+      }
+      return node;
     }
     if(node.element < element){
-      node.right = addRecursive(node.right, node, element);
+      node.right = addRecursive(node.right,  element);
+      node.right.father = node;
     }else if(node.element > element){
-      node.left = addRecursive(node.left, node, element);
+      node.left = addRecursive(node.left, element);
+      node.left.father = node;
     }
     return node;
   }
 
-  /*private Node searchNodeRef(Integer element, Node target) {
-    if ( target == null)
-        return null;
-    // Visita a "raiz"
-    if (element.equals(target.element))
-        return target; // se achou element na "raiz"
 
-    // Visita subarvore da esquerda
-    Node aux = searchNodeRef(element, target.left);
-
-    // Se nao encontrou, visita a subarvore da direita
-    if (aux == null)
-        aux = searchNodeRef(element, target.right);
-
-    return aux;
-  }*/
-
-  public Node getParent(Integer element){
+  /**
+   * getParent Method
+   * Use the getParentRecursive Method
+   * @param element
+   * @return the node parent of a specific node
+   */
+  public Integer getParent(Integer element){
     return getParentRecursive(root, element);
   }
 
-  //Retornar o pai de um elemento: obj getParent(obj);
-  public Node getParentRecursive(Node node, Integer element){
-    if(node == null || node.element.equals(element)){
+  /**
+   * getParentRecursive Method
+   * @param node
+   * @param element
+   * @return a node that will be used by getParent Method
+   */
+  public Integer getParentRecursive(Node node, Integer element){
+    if(node == null){
       return null;
     }
-    if(element < node.element && node.element != null && node.element.equals(element)){
-      return node;
+    if(node.element.equals(element)){
+      return node.father.element;
     }
-    if(element > node.element && node.element.equals(element)){
-      return node;
-    }
-    Node auxLeftNode = getParentRecursive(node.left, element);
-    if(auxLeftNode != null){
-      return auxLeftNode;
-    }else{
+    if (node.element > element) {
+      return getParentRecursive(node.left, element);
+    } else {
       return getParentRecursive(node.right, element);
     }
   }
 
-  // Verificar qual é a altura da árvore: int height();
-  public int height(){
-    return getHeightRecursive(root);
+  /**
+   * height Method
+   * Use the heightRecursive Method
+   * @return the tree height
+   */
+  public int height() {
+    return heightRecursive(root);
   }
 
-  private int getHeightRecursive(Node node){
-    if(node == null){
-      return 0;
+  //NÃO ESTÁ 100%
+  /**
+   * heightRecursive Method
+   * @param node
+   * @return the tree height
+   */
+  private int heightRecursive(Node node) {
+    if (node == null) {
+      return -1; // altura da árvore vazia retorna -1
+    } else {
+      int leftHeight = heightRecursive(node.left);
+      int rightHeight = heightRecursive(node.right);
+      return 1 + Math.max(leftHeight, rightHeight);
     }
-    int leftHeight = getHeightRecursive(node.left);
-    int rightHeight = getHeightRecursive(node.right);
-
-    return Math.max(leftHeight, rightHeight) + 1;
   }
 
-  // Verificar quantos elementos tem na árvore: int size()
+  /**
+   * size Method
+   * @return the tree size
+   */
   public int size(){
     return count;
   }
 
-  //Verificar se a árvore está vazia ou não: boolean isEmpty();
+  /**
+   * isEmpty Method
+   * @return if the tree is empty or not
+   */
   public boolean isEmpty(){
     return root == null;
   }
 
-
-  //Printar Árvore
+  /**
+   * printInOrder Method
+   * Use the printInOrderRecursive Method
+   */
   public void printInOrder() {
     printInOrderRecursive(root);
   }
 
+  /**
+   * printInOrderRecursive Method
+   * @param node
+   */
   private void printInOrderRecursive(Node node) {
     if (node != null){
       printInOrderRecursive(node.left);
@@ -139,86 +153,106 @@ public class BinaryTreeOfInteger {
     }
   }
 
-  // Constrói uma árvore balanceada a partir de uma lista de nodos
-  private Node buildBalancedTree(List<Node> nodes, int start, int end) {
+   /**
+   * Performs an in-order traversal and stores the nodes in a list
+   * @param node
+   * @param nodes
+   */
+  private void inOrder(Node node, List<Node> nodes) {
+    if (node != null) {
+      inOrder(node.left, nodes);
+      nodes.add(node);
+      inOrder(node.right, nodes);
+    }
+  }
+
+  /**
+   * balance Method
+   */
+  public void balanceTree() {
+    if (root != null) {
+      List<Node> nodes = new ArrayList<>();
+      inOrder(root, nodes);
+
+      List<Integer> elements = new ArrayList<>();
+      for (Node node : nodes) {
+          elements.add(node.element);
+      }
+
+      // Constrói uma nova árvore balanceada com base na lista de elementos
+      root = buildBalancedTree(elements, 0, elements.size() - 1);
+    }
+  }
+
+
+  private Node buildBalancedTree(List<Integer> elements, int start, int end) {
     if (start > end) {
-      return null;
+        return null;
     }
 
     int mid = (start + end) / 2;
-    Node midNode = nodes.get(mid);
+    Node newNode = new Node(elements.get(mid));
 
-    midNode.left = buildBalancedTree(nodes, start, mid - 1);
-    midNode.right = buildBalancedTree(nodes, mid + 1, end);
+    newNode.left = buildBalancedTree(elements, start, mid - 1);
+    newNode.right = buildBalancedTree(elements, mid + 1, end);
 
-    return midNode;
+    return newNode;
   }
 
-  // Realiza uma travessia em ordem e armazena os nodos em uma lista
-  private void inOrderTraversal(Node node, List<Node> nodes) {
-    if (node != null) {
-      inOrderTraversal(node.left, nodes);
-      nodes.add(node);
-      inOrderTraversal(node.right, nodes);
-    }
-  }
-
-  // Método para balancear a árvore
-  public void balanceTree() {
-    List<Node> nodes = new ArrayList<>();
-    inOrderTraversal(root, nodes); // Realiza uma travessia em ordem e armazena os nodos em uma lista
-
-    // Constrói uma nova árvore balanceada a partir da lista de nodos
-    root = buildBalancedTree(nodes, 0, nodes.size() - 1);
-  }
-
-  //Printar a árvore balanceada
-  // Método para imprimir a árvore balanceada usando pré-ordem
+  /**
+   * printTreePreOrder Method
+   * Used to print the tree with the preorder path
+   */
   public void printTreePreOrder() {
-    printTreePreOrderRecursive(root, 0);
+    printTreePreOrderRecursive(root);
   }
 
-// Método auxiliar para imprimir a árvore usando pré-ordem de forma recursiva
-  private void printTreePreOrderRecursive(Node node, int depth) {
-    if (node == null) {
-      return;
+  private void printTreePreOrderRecursive(Node node) {
+    if (node != null) {
+      System.out.print(node.element + " "); // Visita o nó
+      printTreePreOrderRecursive(node.left);         // Percorre à esquerda
+      printTreePreOrderRecursive(node.right);        // Percorre à direita
     }
-
-  // Imprime o nó atual (com recuo proporcional à profundidade)
-  for (int i = 0; i < depth; i++) {
-    System.out.print("  ");
-  }
-  System.out.println(node.element);
-
-  // Imprime a subárvore esquerda
-  printTreePreOrderRecursive(node.left, depth + 1);
-
-  // Imprime a subárvore direita
-  printTreePreOrderRecursive(node.right, depth + 1);
   }
 
-  //NÃO ESTÁ 100%
-  // Método para imprimir a árvore balanceada usando pós-ordem
+  /**
+   * printTreePostOrder Method
+   * Used to print the tree with the postorder path
+   */
   public void printTreePostOrder() {
-    printTreePostOrderRecursive(root, 0);
+    printTreePostOrderRecursive(root);
   }
 
-  // Método auxiliar para imprimir a árvore usando pós-ordem de forma recursiva
-  private void printTreePostOrderRecursive(Node node, int depth) {
-    if (node == null) {
-      return;
-  }
-
-    // Imprime a subárvore esquerda
-    printTreePostOrderRecursive(node.left, depth + 1);
-
-    // Imprime a subárvore direita
-    printTreePostOrderRecursive(node.right, depth + 1);
-
-    // Imprime o nó atual (com recuo proporcional à profundidade)
-    for (int i = 0; i < depth; i++) {
-        System.out.print("  ");
+  /**
+   * printTreePostOrder Method
+   * Used in the printTreePostOrder method
+   * @param node
+   */
+  private void printTreePostOrderRecursive(Node node) {
+    if (node != null) {
+      printTreePostOrderRecursive(node.left);     
+      printTreePostOrderRecursive(node.right);    
+      System.out.print(node.element + " ");
     }
-    System.out.println(node.element);
+  }
+
+  public void generateDOT() {
+    System.out.println("digraph BinaryTree {");
+    generateDOTRecursive(root);
+    System.out.println("}");
+}
+
+  private void generateDOTRecursive(Node node) {
+    if (node != null) {
+      if (node.left != null) {
+        System.out.println("  " + node.element + " -> " + node.left.element + " [label=\"left\"]");
+        generateDOTRecursive(node.left);
+      }
+
+      if (node.right != null) {
+        System.out.println("  " + node.element + " -> " + node.right.element + " [label=\"right\"]");
+        generateDOTRecursive(node.right);
+      }
+    }
   }
 }
